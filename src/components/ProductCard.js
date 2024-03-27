@@ -1,14 +1,15 @@
 import React from "react";
 
-const ProductCard = () => {
+const ProductCard = ({ data }) => {
+  console.log(data, "data");
   return (
-    <div>
+    <>
       <img src="" alt="" />
       <div></div>
       <div></div>
       <div></div>
       <div></div>
-    </div>
+    </>
   );
 };
 

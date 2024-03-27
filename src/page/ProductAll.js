@@ -14,10 +14,13 @@ const ProductAll = () => {
     getProducts();
   });
   return (
-    <div>
-      dd
-      <ProductCard />
-    </div>
+    <ul>
+      {productList.map((data) => (
+        <li>
+          <ProductCard data={data} />
+        </li>
+      ))}
+    </ul>
   );
 };
 
