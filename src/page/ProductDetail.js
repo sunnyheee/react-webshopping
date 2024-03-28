@@ -12,7 +12,7 @@ const ProductDetail = () => {
   const [selectedSize, setSelectedSize] = useState("사이즈 선택");
 
   const getProductDetail = async () => {
-    let url = `http://localhost:5000/products/${id}`;
+    let url = `https://my-json-server.typicode.com/sunnyheee/react-webshopping/${id}`;
     let res = await fetch(url);
     let data = await res.json();
     setProduct(data);
