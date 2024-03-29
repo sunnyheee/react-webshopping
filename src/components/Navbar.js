@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
-import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import { faSignOutAlt, faBars } from "@fortawesome/free-solid-svg-icons";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ authenticate, logoutUser }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef();
+  const menuButtonRef = useRef();
   const menuList = [
     "여성",
     "Divied",
@@ -24,6 +27,31 @@ const Navbar = ({ authenticate, logoutUser }) => {
       navigate("/login");
     }
   };
+  const search = (e) => {
+    if (e.key === "Enter") {
+      let keyword = e.target.value;
+      navigate(`/?q=${keyword}`);
+    }
+  };
+  const handleToggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target) &&
+        !menuButtonRef.current.contains(event.target)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
     <div>
       <div className="login-btn-box">
@@ -40,13 +68,25 @@ const Navbar = ({ authenticate, logoutUser }) => {
         />
       </div>
       <div className="menu-area">
-        <ul className="menu-lsit">
+        <button
+          className="hamburger-menu"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          ref={menuButtonRef}
+        >
+          <FontAwesomeIcon icon={faBars} />
+        </button>
+        <ul className={`menu-list ${isMenuOpen ? "show" : ""}`} ref={menuRef}>
           {menuList.map((item, i) => (
             <li key={i}>{item}</li>
           ))}
         </ul>
         <div className="search-container">
-          <input className="search-input" placeholder="검색" />
+          <input
+            type="text"
+            className="search-input"
+            placeholder="검색"
+            onKeyPress={(e) => search(e)}
+          />
           <button className="search-button">
             <FontAwesomeIcon icon={faSearch} />
           </button>
